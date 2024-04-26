@@ -1,3 +1,6 @@
+-- When error
+-- :TSUpdate lua
+
 -- TODO
 
 -- vim.cmd [[
@@ -6,15 +9,15 @@
 -- ]]
 
 -- WSL Settings
-vim.cmd [[
-let s:clip = '/mnt/c/Windows/System32/clip.exe'
-if executable(s:clip)
-    augroup WSLYank
-        autocmd!
-        autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
-    augroup END
-endif
-]]
+-- vim.cmd [[
+-- let s:clip = '/mnt/c/Windows/System32/clip.exe'
+-- if executable(s:clip)
+--     augroup WSLYank
+--         autocmd!
+--         autocmd TextYankPost * if v:event.operator ==# 'y' | call system(s:clip, @0) | endif
+--     augroup END
+-- endif
+-- ]]
 
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
