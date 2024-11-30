@@ -16,76 +16,8 @@ if executable(s:clip)
 endif
 ]]
 
-local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
-if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		'git',
-		'clone',
-		'--filter=blob:none',
-		'https://github.com/folke/lazy.nvim.git',
-		'--branch=stable', -- latest stable release
-		lazypath,
-	})
-end
-
-
-vim.opt.rtp:prepend(lazypath)
-
-require('lazy').setup({
-	-- colorscheme
-	'sainnhe/sonokai',
-
-	-- treesitter シンタックスハイライト
-	'nvim-treesitter/nvim-treesitter',
-
-	-- lsp config
-	'neovim/nvim-lspconfig',
-	-- lsp manager
-	'williamboman/mason.nvim',
-	'williamboman/mason-lspconfig.nvim',
-
-	-- complete
-	'hrsh7th/nvim-cmp',
-	'hrsh7th/cmp-nvim-lsp',
-	'hrsh7th/cmp-path',
-	'hrsh7th/cmp-buffer',
-	'hrsh7th/cmp-cmdline',
-	'hrsh7th/vim-vsnip',
-
-	-- airline
-	'vim-airline/vim-airline',
-
-	-- vim-devicons
-	'ryanoasis/vim-devicons',
-
-	-- nerdtree
-	'scrooloose/nerdtree',
-
-	-- neoterm
-	'kassio/neoterm',
-
-	-- git command
-	'tpope/vim-fugitive',
-	'airblade/vim-gitgutter',
-
-	-- gcc
-	'tpope/vim-commentary',
-
-	-- rust
-	-- 'rust-lang/rust.vim',
-
-	-- lsp saga
-	{
-		'nvimdev/lspsaga.nvim',
-		config = function()
-			require('lspsaga').setup({})
-		end,
-		dependencies = {
-			'nvim-treesitter/nvim-treesitter', -- optional
-			'nvim-tree/nvim-web-devicons' -- optional
-		}
-	}
-})
+-- setup Lazy
+require("config.lazy")
 
 vim.encoding = "UTF-8"
 
