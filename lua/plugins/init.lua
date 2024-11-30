@@ -2,7 +2,7 @@ return {
 	-- colorscheme
 	'sainnhe/sonokai',
 
-	-- treesitter シンタックスハイライト
+	-- treesitter syntax hilight
 	'nvim-treesitter/nvim-treesitter',
 
 	-- lsp config
@@ -31,11 +31,17 @@ return {
 	-- neoterm
 	'kassio/neoterm',
 
-	-- git command
+	-- git
 	'tpope/vim-fugitive',
-	'airblade/vim-gitgutter',
+	-- 'airblade/vim-gitgutter',\
+	{
+		'lewis6991/gitsigns.nvim',
+		config = function()
+			require('gitsigns').setup()
+		end
+	},
 
-	-- gcc
+	-- gcc gc
 	'tpope/vim-commentary',
 
 	-- rust
@@ -51,5 +57,22 @@ return {
 			'nvim-treesitter/nvim-treesitter', -- optional
 			'nvim-tree/nvim-web-devicons' -- optional
 		}
-	}
+	},
+
+	{
+		'stevearc/overseer.nvim',
+		config = function()
+			require('overseer').setup({
+				templates = { "builtin" },
+			})
+		end
+	},
+
+	{
+		"shellRaining/hlchunk.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			require("hlchunk").setup({})
+		end
+	},
 }
