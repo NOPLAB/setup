@@ -51,12 +51,20 @@ vim.opt.mouse = 'a'
 -- cmp
 vim.opt.completeopt = { 'menuone', 'noinsert' }
 
-local set = vim.keymap.set
+-- leader
+vim.g.mapleader = " "
 
 -- Key Config
+local set = vim.keymap.set
 set('i', 'jj', '<ESC>')
 set('n', 'gr', 'gT')
 set('n', 'gw', '<C-w>w')
+
+-- lsp
+
+
+-- Neotree
+set('n', '<C-e>', ':Neotree<CR>')
 
 -- colorscheme
 vim.cmd [[
@@ -64,32 +72,15 @@ let g:sonokai_style = 'andromeda'
 colorscheme sonokai
 ]]
 
--- colorsheme
-
 -- airline
 vim.cmd [[
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#buffer_idx_mode = 1
-" let g:airline_powerline_fonts = 1
+let g:airline_powerline_fonts = 1
 let g:airline_theme = 'sonokai'
 ]]
-
--- vim-devicons
-
--- nerdtree
-vim.cmd [[
-let NERDTreeShowHidden = 1
-nnoremap <silent><C-e> :NERDTreeToggle<CR>
-]]
-
--- neoterm
-set('t', '<ESC>', '<C-\\><C-n>')
-set('t', '<C-t><C-t>', '<C-\\><C-n><C-w>:Ttoggle<CR>')
-set('t', '<C-w>w', '<C-\\><C-n><C-w>w')
-set('n', '<C-t><C-t>', ':Ttoggle<CR>')
-set('n', '<C-w><C-t>', ':Ttoggle<CR>')
 
 vim.cmd [[
 let g:neoterm_default_mod = 'vertical belowright'
@@ -97,25 +88,16 @@ let g:neoterm_autoinsert = 1
 ]]
 
 -- LSP
-set('n', 'K', '<cmd>Lspsaga hover_doc<CR>')
-
-set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')
-
-set('n', 'gR', '<cmd>Lspsaga lsp_finder<CR>')
-
-set('n', 'gd', '<cmd>Lspsaga goto_definition<CR>')
-
-set('n', 'gD', '<cmd>Lspsaga peek_definition<CR>')
-
-set('n', 'gn', '<cmd>Lspsaga rename<CR>')
-
-set({ 'n', 'v' }, 'ga', '<cmd>Lspsaga code_action<CR>')
-
-set('n', '<space>e', '<cmd>Lspsaga show_line_diagnostics<CR>')
-
-set('n', 'g]', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
-
-set('n', 'g[', '<cmd>Lspsaga diagnostic_jump_next<CR>')
+-- set('n', 'K', '<cmd>Lspsaga hover_doc<CR>')
+-- set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')
+-- set('n', 'gR', '<cmd>Lspsaga lsp_finder<CR>')
+-- set('n', 'gd', '<cmd>Lspsaga goto_definition<CR>')
+-- set('n', 'gD', '<cmd>Lspsaga peek_definition<CR>')
+-- set('n', 'gn', '<cmd>Lspsaga rename<CR>')
+-- set({ 'n', 'v' }, 'ga', '<cmd>Lspsaga code_action<CR>')
+-- set('n', '<space>e', '<cmd>Lspsaga show_line_diagnostics<CR>')
+-- set('n', 'g]', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
+-- set('n', 'g[', '<cmd>Lspsaga diagnostic_jump_next<CR>')
 
 -- mason
 require('mason').setup()
@@ -137,26 +119,12 @@ end })
 -- LSP handlers
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 	vim.lsp.diagnostic.on_publish_diagnostics, {
-		virtual_text = false,
+		virtual_text = true,
 		signs = true,
 		float = { border = 'single' },
 		underline = true,
 	}
 )
--- vim.cmd([[au CursorHold * lua Lspsaga show_cursor_diagnostics]])
-
--- Reference highlight & diagnostic
-vim.cmd [[
-set updatetime=400
-highlight LspReferenceText  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
-highlight LspReferenceRead  cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
-highlight LspReferenceWrite cterm=underline ctermfg=1 ctermbg=8 gui=underline guifg=#A00000 guibg=#104040
-augroup lsp_document_highlight
-autocmd!
-autocmd CursorHold,CursorHoldI * lua vim.lsp.buf.document_highlight()
-autocmd CursorMoved,CursorMovedI * lua vim.lsp.buf.clear_references()
-augroup END
-]]
 
 -- completion (hrsh7th/nvim-cmp)
 local cmp = require('cmp')
@@ -234,3 +202,40 @@ require 'nvim-treesitter.configs'.setup {
 		enable = true,
 	}
 }
+
+vim.api.nvim_create_autocmd('LspAttach', {
+	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
+	callback = function(ev)
+		local bufnr = ev.buf
+		vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+		local bufopts = { buffer = bufnr }
+		vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
+		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
+		vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
+		vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
+		vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
+		vim.keymap.set('n', 'gwa', vim.lsp.buf.add_workspace_folder, bufopts)
+		vim.keymap.set('n', 'gwr', vim.lsp.buf.remove_workspace_folder, bufopts)
+		vim.keymap.set('n', 'gwl', function()
+			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+		end, bufopts)
+		vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
+		vim.keymap.set('n', 'gn', vim.lsp.buf.rename, bufopts)
+		vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
+		vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
+		vim.keymap.set('n', 'gf', function()
+			vim.lsp.buf.format { async = true }
+		end, bufopts)
+
+		-- format on save
+		-- vim.api.nvim_create_autocmd("BufWritePre", {
+		-- 	-- 3
+		-- 	buffer = bufnr,
+		-- 	callback = function()
+		-- 		-- 4 + 5
+		-- 		vim.lsp.buf.format { async = false, id = ev.data.client_id }
+		-- 	end,
+		-- })
+	end
+})
