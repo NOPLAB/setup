@@ -64,7 +64,7 @@ set('n', 'gw', '<C-w>w')
 
 
 -- Neotree
-set('n', '<C-e>', ':Neotree<CR>')
+set('n', '<C-e>', ':Neotree toggle<CR>')
 
 -- colorscheme
 vim.cmd [[
@@ -101,20 +101,6 @@ let g:neoterm_autoinsert = 1
 
 -- mason
 require('mason').setup()
-require('mason-lspconfig').setup_handlers({ function(server)
-	local opt = {
-		-- -- Function executed when the LSP server startup
-		-- on_attach = function(client, bufnr)
-		--   local opts = { noremap=true, silent=true }
-		--   vim.api.nvim_buf_set_keymap(bufnr, 'n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', opts)
-		--   vim.cmd 'autocmd BufWritePre * lua vim.lsp.buf.formatting_sync(nil, 1000)'
-		-- end,
-		capabilities = require('cmp_nvim_lsp').default_capabilities(
-			vim.lsp.protocol.make_client_capabilities()
-		)
-	}
-	require('lspconfig')[server].setup(opt)
-end })
 
 -- LSP handlers
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(

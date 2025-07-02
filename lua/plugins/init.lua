@@ -10,6 +10,11 @@ return {
 	-- lsp manager
 	'williamboman/mason.nvim',
 	'williamboman/mason-lspconfig.nvim',
+	opts = {},
+	dependencies = {
+	    { "mason-org/mason.nvim", opts = {} },
+	    "neovim/nvim-lspconfig",
+	},
 
 	-- complete
 	'hrsh7th/nvim-cmp',
