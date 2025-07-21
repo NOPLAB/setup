@@ -60,9 +60,6 @@ set('i', 'jj', '<ESC>')
 set('n', 'gr', 'gT')
 set('n', 'gw', '<C-w>w')
 
--- lsp
-
-
 -- Neotree
 set('n', '<C-e>', ':Neotree toggle<CR>')
 
@@ -86,31 +83,6 @@ vim.cmd [[
 let g:neoterm_default_mod = 'vertical belowright'
 let g:neoterm_autoinsert = 1
 ]]
-
--- LSP
--- set('n', 'K', '<cmd>Lspsaga hover_doc<CR>')
--- set('n', 'gf', '<cmd>lua vim.lsp.buf.format()<CR>')
--- set('n', 'gR', '<cmd>Lspsaga lsp_finder<CR>')
--- set('n', 'gd', '<cmd>Lspsaga goto_definition<CR>')
--- set('n', 'gD', '<cmd>Lspsaga peek_definition<CR>')
--- set('n', 'gn', '<cmd>Lspsaga rename<CR>')
--- set({ 'n', 'v' }, 'ga', '<cmd>Lspsaga code_action<CR>')
--- set('n', '<space>e', '<cmd>Lspsaga show_line_diagnostics<CR>')
--- set('n', 'g]', '<cmd>Lspsaga diagnostic_jump_prev<CR>')
--- set('n', 'g[', '<cmd>Lspsaga diagnostic_jump_next<CR>')
-
--- mason
-require('mason').setup()
-
--- LSP handlers
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-	vim.lsp.diagnostic.on_publish_diagnostics, {
-		virtual_text = true,
-		signs = true,
-		float = { border = 'single' },
-		underline = true,
-	}
-)
 
 -- completion (hrsh7th/nvim-cmp)
 local cmp = require('cmp')
@@ -189,39 +161,5 @@ require 'nvim-treesitter.configs'.setup {
 	}
 }
 
-vim.api.nvim_create_autocmd('LspAttach', {
-	group = vim.api.nvim_create_augroup('UserLspConfig', {}),
-	callback = function(ev)
-		local bufnr = ev.buf
-		vim.bo[bufnr].omnifunc = 'v:lua.vim.lsp.omnifunc'
+vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
 
-		local bufopts = { buffer = bufnr }
-		vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, bufopts)
-		vim.keymap.set('n', 'gd', vim.lsp.buf.definition, bufopts)
-		vim.keymap.set('n', 'K', vim.lsp.buf.hover, bufopts)
-		vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, bufopts)
-		vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, bufopts)
-		vim.keymap.set('n', 'gwa', vim.lsp.buf.add_workspace_folder, bufopts)
-		vim.keymap.set('n', 'gwr', vim.lsp.buf.remove_workspace_folder, bufopts)
-		vim.keymap.set('n', 'gwl', function()
-			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-		end, bufopts)
-		vim.keymap.set('n', 'gt', vim.lsp.buf.type_definition, bufopts)
-		vim.keymap.set('n', 'gn', vim.lsp.buf.rename, bufopts)
-		vim.keymap.set('n', 'ga', vim.lsp.buf.code_action, bufopts)
-		vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-		vim.keymap.set('n', 'gf', function()
-			vim.lsp.buf.format { async = true }
-		end, bufopts)
-
-		-- format on save
-		-- vim.api.nvim_create_autocmd("BufWritePre", {
-		-- 	-- 3
-		-- 	buffer = bufnr,
-		-- 	callback = function()
-		-- 		-- 4 + 5
-		-- 		vim.lsp.buf.format { async = false, id = ev.data.client_id }
-		-- 	end,
-		-- })
-	end
-})

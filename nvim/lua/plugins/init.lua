@@ -5,16 +5,27 @@ return {
 	-- treesitter syntax hilight
 	'nvim-treesitter/nvim-treesitter',
 
-	-- lsp config
-	'neovim/nvim-lspconfig',
 	-- lsp manager
-	'williamboman/mason.nvim',
-	'williamboman/mason-lspconfig.nvim',
-	opts = {},
-	dependencies = {
-	    { "mason-org/mason.nvim", opts = {} },
-	    "neovim/nvim-lspconfig",
+	{
+	    "williamboman/mason.nvim",
+	    build = ":MasonUpdate",
+	    opts = {},
 	},
+	{
+	    "williamboman/mason-lspconfig.nvim",
+	    dependencies = {
+	        { "williamboman/mason.nvim" },
+	        { "neovim/nvim-lspconfig" },
+	        { "echasnovski/mini.completion", version = false },
+	    },
+	    keys={
+		{ "<C-space>", "<cmd>lua vim.lsp.completion.get()  <CR>", mode = "i" },
+		{ "gh",        "<cmd>lua vim.lsp.buf.hover()       <CR>" },
+		{ "gd",        "<cmd>lua vim.lsp.buf.definition()  <CR>" },
+		{ "gD",        "<cmd>lua vim.lsp.buf.declaration() <CR>" },
+	    },
+	},
+	
 
 	-- complete
 	'hrsh7th/nvim-cmp',
@@ -126,21 +137,6 @@ return {
 
 	-- gcc gc
 	'tpope/vim-commentary',
-
-	-- rust
-	-- 'rust-lang/rust.vim',
-
-	-- lsp saga
-	-- {
-	-- 	'nvimdev/lspsaga.nvim',
-	-- 	config = function()
-	-- 		require('lspsaga').setup({})
-	-- 	end,
-	-- 	dependencies = {
-	-- 		'nvim-treesitter/nvim-treesitter', -- optional
-	-- 		'nvim-tree/nvim-web-devicons' -- optional
-	-- 	}
-	-- },
 
 	-- OverseerRun
 	{
