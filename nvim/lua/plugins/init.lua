@@ -1,6 +1,6 @@
 return {
 	-- colorscheme
-	'sainnhe/sonokai',
+	'rebelot/kanagawa.nvim',
 
 	-- treesitter syntax hilight
 	'nvim-treesitter/nvim-treesitter',
@@ -75,6 +75,7 @@ return {
 
 	-- airline
 	'vim-airline/vim-airline',
+	'vim-airline/vim-airline-themes',
 
 	-- vim-devicons
 	'ryanoasis/vim-devicons',

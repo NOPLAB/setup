@@ -65,8 +65,7 @@ set('n', '<C-e>', ':Neotree toggle<CR>')
 
 -- colorscheme
 vim.cmd [[
-let g:sonokai_style = 'andromeda'
-colorscheme sonokai
+colorscheme kanagawa
 ]]
 
 -- airline
@@ -76,7 +75,7 @@ let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#tabline#buffer_idx_mode = 1
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'sonokai'
+let g:airline_theme='minimalist'
 ]]
 
 vim.cmd [[
