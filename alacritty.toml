@@ -1,0 +1,14 @@
+[general]
+#working_directory = "C:\\Users\\nop"
+import = ["~/alacritty-theme/themes/carbonfox.toml"]
+
+[window]
+startup_mode = "Maximized"
+
+[font]
+normal = { family = "CommitMono Nerd Font" }
+
+[terminal]
+#shell = { program = "c:\\program files\\powershell\\7\\pwsh.exe" }
+shell = { program = "wsl.exe", args = ["--cd ~"] }
+
