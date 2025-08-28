@@ -54,19 +54,24 @@ vim.opt.completeopt = { 'menuone', 'noinsert' }
 -- leader
 vim.g.mapleader = " "
 
--- Key Config
+-- auto load
+vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained", "BufEnter" }, {
+  pattern = "*",
+  command = "checktime",
+})
+
+-- key config
 local set = vim.keymap.set
 set('i', 'jj', '<ESC>')
-set('n', 'gr', 'gT')
 set('n', 'gw', '<C-w>w')
-
--- Neotree
-set('n', '<C-e>', ':Neotree toggle<CR>')
 
 -- colorscheme
 vim.cmd [[
 colorscheme kanagawa
 ]]
+
+-- Neotree
+set('n', '<C-e>', ':Neotree toggle<CR>')
 
 -- airline
 vim.cmd [[
@@ -160,5 +165,8 @@ require 'nvim-treesitter.configs'.setup {
 	}
 }
 
+-- lsp
 vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
-
+vim.lsp.config('*', {
+  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+})
