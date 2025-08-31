@@ -183,9 +183,22 @@ return {
 		end
 	},
 
-
+	-- telescope
 	{
 		'nvim-telescope/telescope.nvim',
-		dependencies = { 'nvim-lua/plenary.nvim' }
+		dependencies = { 'nvim-lua/plenary.nvim' },
+		keys = {
+			{ "qt", "<cmd>Telescope<CR>" },
+			{ "qf", "<cmd>Telescope live_grep<CR>" },
+		}
+	},
+	{
+		"nvim-telescope/telescope-frecency.nvim",
+		config = function()
+			require("telescope").load_extension "frecency"
+		end,
+		keys = {
+			{ "qf", "<cmd>Telescope frecency<CR>"},
+		}
 	}
 }

@@ -1,8 +1,3 @@
--- When error
--- :TSUpdate lua
-
--- TODO
-
 -- vim.cmd [[
 -- let g:python_host_prog='/Users/nop/.pyenv/versions/2.7.18/bin/python'
 -- let g:python3_host_prog='/Users/nop/.pyenv/shims/python3'
@@ -63,12 +58,57 @@ vim.api.nvim_create_autocmd({ "WinEnter", "FocusGained", "BufEnter" }, {
 -- key config
 local set = vim.keymap.set
 set('i', 'jj', '<ESC>')
-set('n', 'gw', '<C-w>w')
+
+-- マクロ記録開始時に発火
+vim.api.nvim_create_autocmd('RecordingEnter', {
+  pattern = '*',
+  group = augroup_wrapper,
+  callback = function()
+    -- q以外のマクロは使わないという強い意志で即終了
+    if vim.fn.reg_recording() ~= 'q' then
+      vim.cmd('normal! q')
+      return
+    end
+
+    -- マクロ記録中のみ有効なaugroup
+    local augroup_inner = vim.api.nvim_create_augroup('prefix-q-inner', {})
+
+    -- カレントバッファを取得
+    local buffer = vim.api.nvim_get_current_buf()
+
+    -- buffer-localでqを即終了キーに設定することでprefixを無視
+    vim.keymap.set('n', 'q', 'q', { nowait = true, buffer = buffer })
+
+    -- BufferやWindowをまたぐマクロはないだろうということで強制終了
+    vim.api.nvim_create_autocmd({ 'BufLeave', 'WinLeave' }, {
+      pattern = '*',
+      once = true,
+      group = augroup_inner,
+      callback = function()
+        vim.cmd('normal! q')
+        vim.notify('stop recording', vim.log.levels.INFO)
+      end,
+      desc = 'stop recording when leaving buffer',
+    })
+
+    -- マクロ記録終了時にqキーのマッピングとautocmdを削除
+    vim.api.nvim_create_autocmd('RecordingLeave', {
+      pattern = '*',
+      once = true,
+      callback = function()
+        vim.keymap.del('n', 'q', { buffer = buffer })
+        vim.api.nvim_del_augroup_by_id(augroup_inner)
+      end,
+      desc = 'delete q mapping when recording leave',
+    })
+  end,
+})
+
+-- Neotree
+set('n', '<C-e>', ':Neotree toggle<CR>')
 
 -- colorscheme
-vim.cmd [[
-colorscheme kanagawa
-]]
+vim.cmd'colorscheme kanagawa'
 
 -- Neotree
 set('n', '<C-e>', ':Neotree toggle<CR>')
@@ -168,5 +208,5 @@ require 'nvim-treesitter.configs'.setup {
 -- lsp
 vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
 vim.lsp.config('*', {
-  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+	capabilities = require('cmp_nvim_lsp').default_capabilities(),
 })
