@@ -38,7 +38,7 @@ vim.opt.ignorecase = true
 vim.opt.incsearch = true
 
 -- クリップボード
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
 
 --マウス
 vim.opt.mouse = 'a'

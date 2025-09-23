@@ -7,34 +7,34 @@ return {
 
 	-- lsp manager
 	{
-	    "williamboman/mason.nvim",
-	    build = ":MasonUpdate",
-	    opts = {},
+		"williamboman/mason.nvim",
+		build = ":MasonUpdate",
+		opts = {},
 	},
 	{
-	    "williamboman/mason-lspconfig.nvim",
-	    dependencies = {
-	        { "williamboman/mason.nvim" },
-	        { "neovim/nvim-lspconfig" },
-	        { "echasnovski/mini.completion", version = false },
-	    },
-	    keys = {
-		{ "<C-space>", "<cmd>lua vim.lsp.completion.get()     <CR>", mode = "i" },
-		{ "ga",        "<cmd>lua vim.lsp.buf.code_action()    <CR>" },
-		{ "gn",        "<cmd>lua vim.lsp.buf.rename()         <CR>" },
-		{ "gr",        "<cmd>lua vim.lsp.buf.references()     <CR>" },
-		{ "gi",        "<cmd>lua vim.lsp.buf.implementation() <CR>"},
-		{ "gd",        "<cmd>lua vim.lsp.buf.definition()     <CR>" },
-		{ "gD",        "<cmd>lua vim.lsp.buf.declaration()    <CR>" },
-		{ "gh",        "<cmd>lua vim.lsp.buf.hover()          <CR>" },
-		{ "gf",        "<cmd>lua vim.lsp.buf.format()         <CR>" },
-		{ "<C-k>",     "<cmd>lua vim.diagnostic.open_float()  <CR>" },
-	    },
-	    config = function()
-		vim.diagnostic.config({ virtual_text = true })
-	    end,
+		"williamboman/mason-lspconfig.nvim",
+		dependencies = {
+			{ "williamboman/mason.nvim" },
+			{ "neovim/nvim-lspconfig" },
+			{ "echasnovski/mini.completion", version = false },
+		},
+		keys = {
+			{ "<C-space>", "<cmd>lua vim.lsp.completion.get()     <CR>", mode = "i" },
+			{ "ga",        "<cmd>lua vim.lsp.buf.code_action()    <CR>" },
+			{ "gn",        "<cmd>lua vim.lsp.buf.rename()         <CR>" },
+			{ "gr",        "<cmd>lua vim.lsp.buf.references()     <CR>" },
+			{ "gi",        "<cmd>lua vim.lsp.buf.implementation() <CR>" },
+			{ "gd",        "<cmd>lua vim.lsp.buf.definition()     <CR>" },
+			{ "gD",        "<cmd>lua vim.lsp.buf.declaration()    <CR>" },
+			{ "gh",        "<cmd>lua vim.lsp.buf.hover()          <CR>" },
+			{ "gf",        "<cmd>lua vim.lsp.buf.format()         <CR>" },
+			{ "<C-k>",     "<cmd>lua vim.diagnostic.open_float()  <CR>" },
+		},
+		config = function()
+			vim.diagnostic.config({ virtual_text = true })
+		end,
 	},
-	
+
 
 	-- complete
 	'hrsh7th/nvim-cmp',
@@ -90,20 +90,20 @@ return {
 	'ryanoasis/vim-devicons',
 
 	{
-	    "folke/noice.nvim",
-	    event = "VeryLazy",
-	    opts = {
-		-- add any options here
-	    },
-	    dependencies = {
-		-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
-		"MunifTanjim/nui.nvim",
-		-- OPTIONAL:
-		--   `nvim-notify` is only needed, if you want to use the notification view.
-		--   If not available, we use `mini` as the fallback
-		"rcarriga/nvim-notify",
-	    }
-	    
+		"folke/noice.nvim",
+		event = "VeryLazy",
+		opts = {
+			-- add any options here
+		},
+		dependencies = {
+			-- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+			"MunifTanjim/nui.nvim",
+			-- OPTIONAL:
+			--   `nvim-notify` is only needed, if you want to use the notification view.
+			--   If not available, we use `mini` as the fallback
+			"rcarriga/nvim-notify",
+		}
+
 	},
 
 	-- explorer
@@ -186,10 +186,10 @@ return {
 	-- telescope
 	{
 		'nvim-telescope/telescope.nvim',
-		dependencies = { 'nvim-lua/plenary.nvim' },
+		dependencies = { "nvim-lua/plenary.nvim" },
 		keys = {
-			{ "qt", "<cmd>Telescope<CR>" },
-			{ "qf", "<cmd>Telescope live_grep<CR>" },
+			{ "<Space>t", "<cmd>Telescope<CR>" },
+			{ "<Space>g", "<cmd>Telescope live_grep<CR>" },
 		}
 	},
 	{
@@ -198,7 +198,7 @@ return {
 			require("telescope").load_extension "frecency"
 		end,
 		keys = {
-			{ "qf", "<cmd>Telescope frecency<CR>"},
+			{ "<Space>f", "<cmd>Telescope frecency<CR>" },
 		}
 	}
 }
