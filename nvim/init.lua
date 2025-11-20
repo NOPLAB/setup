@@ -38,7 +38,6 @@ vim.opt.ignorecase = true
 vim.opt.incsearch = true
 
 -- クリップボード
--- Note: use "*yy "*p
 -- vim.opt.clipboard = 'unnamedplus'
 
 --マウス
