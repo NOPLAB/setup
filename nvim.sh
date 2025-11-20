@@ -9,13 +9,13 @@ function copy2nvim {
     mkdir -p $HOME/.config/nvim/lua/config
 
     cp $SCRIPT_DIR/nvim/init.lua $HOME/.config/nvim/init.lua
-    cp $SCRIPT_DIR/nvim/lua/plugins/init.lua $HOME/.config/nvim/lua/plugins/init.lua
+    cp $SCRIPT_DIR/nvim/lua/plugins/* $HOME/.config/nvim/lua/plugins
     cp $SCRIPT_DIR/nvim/lua/config/lazy.lua $HOME/.config/nvim/lua/config/lazy.lua
 }
 
 function copy2git {
     cp $HOME/.config/nvim/init.lua $SCRIPT_DIR/nvim/init.lua
-    cp $HOME/.config/nvim/lua/plugins/init.lua $SCRIPT_DIR/nvim/lua/plugins/init.lua
+    cp $HOME/.config/nvim/lua/plugins/* $SCRIPT_DIR/nvim/lua/plugins
     cp $HOME/.config/nvim/lua/config/lazy.lua $SCRIPT_DIR/nvim/lua/config/lazy.lua
 }
 
@@ -26,7 +26,7 @@ function config_diff {
     diff $CONFIG_DIR/nvim/init.lua $SCRIPT_DIR/nvim/init.lua
     echo 
     echo Diff: $CONFIG_DIR/nvim/lua/plugins/init.lua
-    diff $CONFIG_DIR/nvim/lua/plugins/init.lua $SCRIPT_DIR/nvim/lua/plugins/init.lua
+    diff $CONFIG_DIR/nvim/lua/plugins/* $SCRIPT_DIR/nvim/lua/plugins
 }
 
 
