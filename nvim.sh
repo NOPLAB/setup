@@ -32,8 +32,10 @@ function config_diff {
 
 if [[ $1 == "copy" ]]; then
     if [[ $2 == "r" || $2 == "rev" || $2 == "reverse" ]]; then
+	echo Copy to Git
 	copy2git
     else
+	echo Copy to Neovim
 	copy2nvim
     fi
 fi
