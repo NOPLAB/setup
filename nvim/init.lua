@@ -193,18 +193,6 @@ cmp.setup.cmdline(':', {
 	})
 })
 
--- treesitter
-require 'nvim-treesitter.configs'.setup {
-	highlight = {
-		enable = true,
-		disable = {
-		}
-	},
-	indent = {
-		enable = true,
-	}
-}
-
 -- lsp
 vim.lsp.enable(require('mason-lspconfig').get_installed_servers())
 vim.lsp.config('*', {
