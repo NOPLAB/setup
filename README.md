@@ -19,3 +19,10 @@ It leaves unrelated existing files and skills in place.
 Run `powershell -ExecutionPolicy Bypass -File .\install-nvim.ps1` from this directory
 to copy the tracked Neovim configuration into `%LOCALAPPDATA%\nvim`.
 The script keeps local files such as `lazy-lock.json`.
+
+## Windows applications
+
+Run `powershell -ExecutionPolicy Bypass -File .\install-with-winget.ps1 -ListOnly` to
+review the package IDs. Omit `-ListOnly` to install them with winget. Installed
+versions are left alone; individual failures are reported after the remaining
+packages have been attempted.
