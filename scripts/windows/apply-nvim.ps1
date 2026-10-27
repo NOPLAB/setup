@@ -1,7 +1,7 @@
 param([string]$Destination = (Join-Path $env:LOCALAPPDATA 'nvim'))
 
 $ErrorActionPreference = 'Stop'
-$source = Join-Path $PSScriptRoot 'nvim'
+$source = Join-Path $PSScriptRoot '../../config/nvim'
 $files = @('init.lua', 'lua/config/lazy.lua') + @(
     Get-ChildItem -LiteralPath (Join-Path $source 'lua/plugins') -File |
         ForEach-Object { "lua/plugins/$($_.Name)" }

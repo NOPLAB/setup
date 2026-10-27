@@ -4,15 +4,17 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$source = Join-Path $PSScriptRoot 'codex'
+$source = Join-Path $PSScriptRoot '../../config/codex'
 $agents = Join-Path $source 'AGENTS.md'
 if (-not (Test-Path -LiteralPath $agents -PathType Leaf)) { throw "Missing $agents" }
-$managedHeader = '<!-- Managed by setup/install-codex.ps1 -->'
+$managedHeader = '<!-- Managed by setup/scripts/windows/apply-codex.ps1 -->'
+$legacyHeader = '<!-- Managed by setup/install-codex.ps1 -->'
 $destinationAgents = Join-Path $CodexHome 'AGENTS.md'
 $existingAgents = Get-Item -LiteralPath $destinationAgents -Force -ErrorAction SilentlyContinue
 if ($existingAgents -and ($existingAgents.PSIsContainer -or $existingAgents.LinkType -or
     ($existingAgents.Length -gt 0 -and
-    -not (Get-Content -LiteralPath $destinationAgents -Raw).StartsWith($managedHeader)))) {
+    -not (Get-Content -LiteralPath $destinationAgents -Raw).StartsWith($managedHeader) -and
+    -not (Get-Content -LiteralPath $destinationAgents -Raw).StartsWith($legacyHeader)))) {
     throw "Destination already exists: $destinationAgents"
 }
 
