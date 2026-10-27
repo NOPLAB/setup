@@ -43,7 +43,7 @@ bash scripts/linux/get-nvim.sh
 
 コピーでは対象ファイルを上書きしますが、コピー先だけにあるファイルは削除しません。
 
-この Neovim 設定は `vim.lsp.enable()` を使うため Neovim 0.11 以降が必要です。導入されたバージョンが古い場合は、別途 0.11 以降を導入してください。
+この Neovim 設定は Neovim 0.12 以降が必要です。導入されたバージョンが古い場合は、別途 0.12 以降を導入してください。
 
 ## Windows
 
@@ -66,7 +66,7 @@ powershell -ExecutionPolicy Bypass -File .\scripts\windows\apply-codex.ps1
 
 アプリ導入ではインストール済みのバージョンを更新せず、個別に失敗しても残りを試した後に失敗したパッケージを報告します。
 
-Neovim の apply/get は `init.lua`、`lua/config/lazy.lua`、`lua/plugins/` 直下のファイルをコピーします。対象ファイルは上書きし、コピー先だけにあるファイルは削除しません。`lazy-lock.json` は反映・取り込みの対象外です。
+Neovim の apply/get は `init.lua`、`lazy-lock.json`、`lua/config/` と `lua/plugins/` 直下のファイルをコピーします。対象ファイルは上書きし、コピー先だけにあるファイルは削除しません。必須ファイルがない場合は、コピー先を変更する前に終了します。
 
 Codex の共通指示は `config/codex/AGENTS.md` を編集し、変更後にスクリプトを再実行します。旧 `install-codex.ps1` で配置した管理対象ファイルも更新できます。管理対象外の既存 `AGENTS.md` は上書きしません。
 
@@ -85,5 +85,22 @@ Codex の共通指示は `config/codex/AGENTS.md` を編集し、変更後にス
 | MCP | リポジトリ直下の `.mcp.json` | ルートに維持 |
 
 Neovim の `get-nvim.sh` / `get-nvim.ps1` は、上記の利用先から `config/nvim/` へ逆方向にコピーします。
+
+## Neovim 設定
+
+- `init.lua`：基本設定とプラグイン管理を順番に読み込みます。
+- `lua/config/`：オプション、基本キー操作、自動コマンド、lazy.nvim の起動処理です。
+- `lua/plugins/`：LSP、補完、Treesitter、ターミナル、UI、ファイル操作、検索を機能別に設定します。
+- `lazy-lock.json`：プラグインのコミットを固定します。別 PC への反映後は `:Lazy restore` で固定バージョンにそろえます。プラグインを更新したら `get-nvim` で lockfile も取り込みます。
+
+初回起動時はプラグイン、Lua 言語サーバー、Treesitter パーサーを取得するためネットワーク接続が必要です。Treesitter の `main` ブランチを使うため、`tree-sitter` CLI 0.26.1 以降、C コンパイラー、`tar`、`curl` も用意してください。Telescope の全文検索には `rg` が必要です。
+
+Mason は `lua_ls` を自動導入し、Mason で導入済みの他の LSP サーバーも自動で有効化します。StyLua は CLI として使い、旧バージョンの `--lsp` 非対応エラーや Lua の整形機能の重複を避けるため、LSP の自動有効化から除外します。自動導入するサーバーは `lua/plugins/lsp.lua` の `ensure_installed` に追加できます。Treesitter は C、Lua、Markdown、query、Vim、vimdoc のパーサーを導入し、利用可能なパーサーがあるファイルでハイライトを有効にします。
+
+補完は nvim-cmp に統一し、LSP、vsnip、バッファー、コマンドラインと、Git コミット用の Git ソースを使います。`<C-Space>` で補完、`<C-p>` / `<C-n>` で候補移動、`<CR>` で確定します。
+
+LSP の操作はサーバーが接続したバッファーだけに設定します。`gd` / `gD` は定義 / 宣言、`grr` は参照、`gri` は実装、`gh` はドキュメント、`<Space>ca` はコードアクション、`<Space>rn` はリネーム、`<Space>cf` は整形です。標準の `gf` などは上書きしません。
+
+`<C-e>` はファイルツリー、`tt` / `tv` / `th` はタブ / 縦 / 横のターミナルを開閉します。Lua の編集はスペース 2 個にそろえます。リポジトリの Lua ファイルも `.stylua.toml` で同じ形式に整形します。
 
 Alacritty が参照する carbonfox テーマと CommitMono Nerd Font は別途用意してください。MCP の GitHub 接続には環境変数 `GITHUB_PAT` を使用します。

@@ -5,10 +5,16 @@ set -euo pipefail
 script_dir=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)
 source_dir="$script_dir/../../config/nvim"
 destination_dir="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
-files=(init.lua lua/config/lazy.lua)
+files=(init.lua lazy-lock.json lua/config/lazy.lua)
+configs=()
 plugins=()
-shopt -s nullglob
+shopt -s nullglob dotglob
 
+for file in "$source_dir"/lua/config/*; do
+    if [[ -f $file ]]; then
+        configs+=("$file")
+    fi
+done
 for file in "$source_dir"/lua/plugins/*; do
     if [[ -f $file ]]; then
         plugins+=("$file")
@@ -26,8 +32,11 @@ if ((${#plugins[@]} == 0)); then
 fi
 
 mkdir -p -- "$destination_dir/lua/config" "$destination_dir/lua/plugins"
-for file in "${files[@]}"; do
+for file in init.lua lazy-lock.json; do
     cp -- "$source_dir/$file" "$destination_dir/$file"
+done
+for file in "${configs[@]}"; do
+    cp -- "$file" "$destination_dir/lua/config/"
 done
 for file in "${plugins[@]}"; do
     cp -- "$file" "$destination_dir/lua/plugins/"
