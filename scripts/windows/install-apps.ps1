@@ -28,6 +28,7 @@ $packages = @(
     'Microsoft.VisualStudio.BuildTools'
     'JetBrains.Toolbox'
     'Neovim.Neovim'
+    'tree-sitter.tree-sitter-cli'
     'vim.vim'
     'Helix.Helix'
     'ZedIndustries.Zed'
