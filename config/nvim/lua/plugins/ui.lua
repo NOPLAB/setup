@@ -1,5 +1,17 @@
 return {
   {
+    "xiyaowong/transparent.nvim",
+    lazy = false,
+    opts = {},
+    config = function(_, opts)
+      require("transparent").setup(opts)
+      vim.cmd.TransparentEnable()
+    end,
+    keys = {
+      { "<leader>ut", "<Cmd>TransparentToggle<CR>", desc = "Toggle transparency" },
+    },
+  },
+  {
     "rebelot/kanagawa.nvim",
     lazy = false,
     priority = 1000,
